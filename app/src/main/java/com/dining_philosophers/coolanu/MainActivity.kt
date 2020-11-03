@@ -26,6 +26,6 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         }
-        webView.loadUrl("http://tabsur.herokuapp.com/Meals")
+        webView.loadUrl("http://BeMyGuest.app")
     }
 }
