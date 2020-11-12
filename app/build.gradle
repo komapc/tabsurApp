@@ -4,7 +4,18 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     signingConfigs {
-        release {
+        file(rootProject.file('asdads./app/key.properties')).with { propFile ->
+            if (propFile.canRead()) {
+                release {
+                    keyAlias keystoreProperties['keyAlias']
+                    keyPassword keystoreProperties['keyPassword']
+                    storeFile file(keystoreProperties['storeFile'])
+                    storePassword keystoreProperties['storePassword']
+                }
+            }
+            else {
+                print('Not signed')
+            }
         }
     }
     compileSdkVersion 29
@@ -14,16 +25,34 @@ android {
         applicationId "com.dining_philosophers.coolanu"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "4.0 release"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            file(rootProject.file('key.properties')).with { propFile ->
+                if (propFile.canRead()) {
+                    // because we can read the keystore
+                    // we are building locally
+                    // so sign locally
+                    // otherwise build an unsigned apk for later signing by the CI/CD provider
+                    signingConfig signingConfigs.release
+                    // Optional, specify signing versions used
+                    v1SigningEnabled true
+                    v2SigningEnabled true
+                }
+            }
+
+            applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                    output.outputFileName = "app-release.apk"
+                }
+            }
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            // signingConfig signingConfigs.release
         }
     }
 
