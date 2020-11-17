@@ -1,10 +1,11 @@
-package com.dining_philosophers.coolanu
+package com.dining_philosophers.beMyGuest
 
 import android.os.Bundle
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import com.dining_philosophers.coolanu.R
 
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         val webSettings: WebSettings = webView.settings
         webSettings.javaScriptEnabled = true
         webSettings.domStorageEnabled = true
+        webSettings.javaScriptCanOpenWindowsAutomatically = true
+        webSettings.supportMultipleWindows()
         window.decorView.systemUiVisibility = 0x10
 
         webView.webViewClient = object : WebViewClient() {
@@ -25,7 +28,10 @@ class MainActivity : AppCompatActivity() {
                 view?.loadUrl(url)
                 return true
             }
+
+
         }
         webView.loadUrl("https://www.BeMyGuest.app")
     }
+
 }
