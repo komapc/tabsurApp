@@ -26,6 +26,6 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         }
-        webView.loadUrl("http://BeMyGuest.app")
+        webView.loadUrl("https://www.BeMyGuest.app")
     }
 }
